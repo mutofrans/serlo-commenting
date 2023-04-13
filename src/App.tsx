@@ -16,7 +16,7 @@ const App = () => {
   const [selectionObj, setSelectionObj] = useState<SelectionObject>
     ({ selection: '', start: 0, end: 0, comment: '' });
   const [lastSelection, setLastSelection] = useState<string | undefined>("");
-  const [commentToBeSaved, setCommentToBeSaved] = useState<string | "">("");
+  const [commentInput, setCommentInput] = useState<string | "">("");
   const [comments, setComments] = useState<SelectionObject[]>([]);
   const [content, setContent] = useState<string[]>([]);
 
@@ -43,23 +43,23 @@ const App = () => {
           selection: window?.getSelection()?.toString(),
           start: Math.min(focusOffset, anchorOffset),
           end: Math.max(focusOffset, anchorOffset),
-          comment: commentToBeSaved,
+          comment: commentInput,
         });
       }
     });
-  }, [selection, commentToBeSaved]);
+  }, [selection, commentInput]);
 
   const handleAddComment = () => {
     if (!selectionObj.comment) {
       return;
     }
     setComments([...comments, { ...selectionObj }]);
-    setCommentToBeSaved("");
+    setCommentInput("");
   }
 
   const handleInputChange = (e: ChangeEvent<any>) => {
     e.preventDefault();
-    setCommentToBeSaved(e.target.value);
+    setCommentInput(e.target.value);
     setSelectionObj({
       ...selectionObj,
       comment: e.target.value,
@@ -100,11 +100,10 @@ const App = () => {
         </div>
         <InputGroup>
           <InputGroup.Text>Your comment to be added</InputGroup.Text>
-          <Form.Control onChange={handleInputChange} value={commentToBeSaved} as="textarea" aria-label="With textarea" />
+          <Form.Control onChange={handleInputChange} value={commentInput} as="textarea" aria-label="With textarea" />
         </InputGroup>
         {lastSelection ? <Button onClick={handleAddComment}>Add a new comment</Button> : null}
         {comments.length > 0 && comments.map(({ selection, comment }, index) => {
-          console.log(comment + "for" + selection)
           return <div key={`${Math.random()}-comment-selection`}>
             <mark>{selection}</mark>
             <div>{comment}</div>
