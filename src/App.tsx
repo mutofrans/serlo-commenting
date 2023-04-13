@@ -63,6 +63,10 @@ const App = () => {
   const handleInputChange = (e: ChangeEvent<any>) => {
     e.preventDefault();
     setCommentToBeSaved(e.target.value);
+    setSelectionObj({
+      ...selectionObj,
+      comment: commentToBeSaved,
+    });
   }
 
   return (
@@ -101,6 +105,7 @@ const App = () => {
         </InputGroup>
         {lastSelection ? <Button onClick={handleAddComment}>Add a new comment</Button> : null}
         {comments.length > 0 && comments.map(({ selection, comment }, index) => {
+          console.log(comment + "for" + selection)
           return <div key={index}>
             <mark>{selection}</mark>
             <div>{comment}</div>
