@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useLayoutEffect, useState } from 'react';
-import './App.css';
 import { Button, Container, Stack } from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
+import './App.css';
 
 interface SelectionObject {
   selection: string | undefined,
@@ -22,7 +22,6 @@ const App = () => {
 
   useLayoutEffect(() => {
     let wholeText = document?.getElementById("text-for-selection")?.innerText!;
-
     let myStringArray = []
     for (let i = 0; i < wholeText?.length!; i++) {
       myStringArray.push(wholeText[i]);
@@ -51,12 +50,10 @@ const App = () => {
   }, [selection, commentToBeSaved]);
 
   const handleAddComment = () => {
-    if (!commentToBeSaved) {
+    if (!selectionObj.comment) {
       return;
     }
-    setSelectionObj({ ...selectionObj, comment: commentToBeSaved });
     setComments([...comments, { ...selectionObj }]);
-    console.log(comments)
     setCommentToBeSaved("");
   }
 
@@ -65,7 +62,7 @@ const App = () => {
     setCommentToBeSaved(e.target.value);
     setSelectionObj({
       ...selectionObj,
-      comment: commentToBeSaved,
+      comment: e.target.value,
     });
   }
 
@@ -73,7 +70,7 @@ const App = () => {
     <Container>
       <Stack gap={3}>
 
-        {comments.length > 0 ?
+        {/* {comments.length > 0 ?
           comments.map(c => {
             // we need to map over the comments array to detect if we hit the start of the comment with start === index
             return content.map((item, index) => {
@@ -85,7 +82,9 @@ const App = () => {
                 return item;
               }
             });
-          }) : <div className="bg-light border" id="text-for-selection">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a vulputate ligula, in posuere nisl. Nullam in luctus nunc. Etiam at est ex. Maecenas interdum elementum nisl vitae gravida. Quisque ac lacus tincidunt, convallis est quis, porta mauris. Mauris ut dapibus nisi. Proin iaculis interdum libero, non pharetra eros mattis non. Proin vel velit blandit, elementum est nec, lacinia mi. Phasellus dapibus, neque at sagittis lobortis, urna felis condimentum tortor, mattis sagittis lacus ligula ut risus. Cras ac tempor turpis, nec condimentum purus. Nullam ullamcorper pharetra tempor. Vivamus dapibus congue rhoncus. Etiam eu pulvinar est. Nam rhoncus, ipsum ut pulvinar vehicula, libero metus convallis est, sed tristique elit justo eget purus.
+          }) :  */}
+        {
+          <div className="bg-light border" id="text-for-selection">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a vulputate ligula, in posuere nisl. Nullam in luctus nunc. Etiam at est ex. Maecenas interdum elementum nisl vitae gravida. Quisque ac lacus tincidunt, convallis est quis, porta mauris. Mauris ut dapibus nisi. Proin iaculis interdum libero, non pharetra eros mattis non. Proin vel velit blandit, elementum est nec, lacinia mi. Phasellus dapibus, neque at sagittis lobortis, urna felis condimentum tortor, mattis sagittis lacus ligula ut risus. Cras ac tempor turpis, nec condimentum purus. Nullam ullamcorper pharetra tempor. Vivamus dapibus congue rhoncus. Etiam eu pulvinar est. Nam rhoncus, ipsum ut pulvinar vehicula, libero metus convallis est, sed tristique elit justo eget purus.
 
             Nulla bibendum in diam ac laoreet. Etiam egestas nibh ac neque porta tristique. Integer vel porttitor nisl. Vivamus laoreet turpis a lacus hendrerit, a ultricies leo aliquet. Quisque et nisi ligula. Nullam quis dolor vel purus tempor laoreet. Aenean mattis risus sit amet mi hendrerit finibus. In hac habitasse platea dictumst. Vestibulum at leo imperdiet, lobortis orci at, scelerisque neque. Fusce urna sem, laoreet in leo sit amet, venenatis blandit leo. Maecenas vitae odio quis augue egestas tristique. Sed purus arcu, euismod at facilisis et, laoreet id dolor. Nulla a dui hendrerit, fringilla diam id, placerat erat.
 
@@ -106,7 +105,7 @@ const App = () => {
         {lastSelection ? <Button onClick={handleAddComment}>Add a new comment</Button> : null}
         {comments.length > 0 && comments.map(({ selection, comment }, index) => {
           console.log(comment + "for" + selection)
-          return <div key={index}>
+          return <div key={`${Math.random()}-comment-selection`}>
             <mark>{selection}</mark>
             <div>{comment}</div>
           </div>;
